@@ -15,4 +15,6 @@ verilator -Wall --cc --trace f1_fsm.sv --exe f1_fsm_tb.cpp
 make -j -C obj_dir/ -f Vf1_fsm.mk Vf1_fsm
 
 # run executable simulation file
+echo "\n\nRunning simulation"
 obj_dir/Vf1_fsm
+echo "\n\nStopping simulation"

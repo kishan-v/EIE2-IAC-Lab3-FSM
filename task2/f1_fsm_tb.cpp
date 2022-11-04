@@ -4,8 +4,6 @@
 
 #include "vbuddy.cpp" // include vbuddy code
 #define MAX_SIM_CYC 1000000
-#define ADDRESS_WIDTH 9
-#define RAM_SZ pow(2, ADDRESS_WIDTH)
 
 int main(int argc, char **argv, char **env)
 {

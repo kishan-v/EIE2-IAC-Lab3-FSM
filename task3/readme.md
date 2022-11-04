@@ -1,3 +1,1 @@
-Create your design in this folder.
-
-Don't forget to copy new version of vbuddy.cpp and your port configuration file vbuddy.cfg to this folder.
+Task 3: Calibrated 60bpm to N=46 (0x2E)
