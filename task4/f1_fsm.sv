@@ -11,6 +11,7 @@ module f1_fsm (
   logic [7:0] out;
   // Define our states
   typedef enum {
+    IDLE,
     S0,
     S1,
     S2,
@@ -24,9 +25,10 @@ module f1_fsm (
   my_state current_state, next_state;  // instantiane two state objects
 
   // state registers
-  always_ff @(posedge clk, posedge rst) begin
+  always_ff @(posedge clk, posedge trigger) begin
     if (rst) current_state <= S0;  // RST back to state 0
-    if (en) current_state <= next_state;  // if enable pressed, advance state
+    if (en) current_state <= next_state;  // if enable on, advance state
+    if (trigger) current_state <= S1;  // if triggered, advance to S0
   end
   //next state logic
   always_comb
@@ -34,10 +36,12 @@ module f1_fsm (
       S0: begin
         next_state = S1;
         out = 8'b0;
+        cmd_delay = 1'b0;
       end
       S1: begin
         next_state = S2;
         out = 8'b1;
+        cmd_seq = 1'b1;
       end
       S2: begin
         next_state = S3;
@@ -66,10 +70,11 @@ module f1_fsm (
       S8: begin
         next_state = S0;
         out = 8'b11111111;
+        cmd_seq = 1'b0;
+        cmd_delay = 1'b1;
       end
       default: begin
         next_state = S0;
-        out = 8'b11111111;
       end  // in any other scenario 'reset' to S0
     endcase
 
