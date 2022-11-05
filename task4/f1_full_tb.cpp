@@ -61,11 +61,12 @@ int main(int argc, char **argv, char **env)
             vbdInitWatch(); // so start stopwatch
         }
 
-        vbdHex(1, vbdElapsed() / 1000); // Elapsed is time since stopwatch init to Rotary button press??
-
         // display on neopixel strip
         vbdBar(top->data_out & 0xFF);
-
+        vbdHex(1, vbdElapsed() % 10); // Elapsed is time since stopwatch init to Rotary button press??
+        vbdHex(2, (vbdElapsed() / 10) % 10);
+        vbdHex(3, (vbdElapsed() / 100) % 10);
+        vbdHex(4, (vbdElapsed() / 1000) % 10);
         vbdCycle(simcyc);
 
         // either simulation finished, or 'q' is pressed
