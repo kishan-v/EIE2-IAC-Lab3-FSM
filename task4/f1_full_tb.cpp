@@ -32,6 +32,8 @@ int main(int argc, char **argv, char **env)
     top->N = vbdValue(); // N scaler (per laptop) such that a tick runs ever N+1 clock cycles where N is the number of clock cycles that take 1 second to complete
     vbdSetMode(1);       // need trigger edge
 
+    int lights_state_before = 0; // tracks if lights are all on before clocking module
+    int lights_state_after = 1;  // .. after clocking module
     // run simulation for MAX_SIM_CYC clock cycles
     for (simcyc = 0; simcyc < MAX_SIM_CYC; simcyc++)
     {
@@ -39,7 +41,14 @@ int main(int argc, char **argv, char **env)
         top->rst = (simcyc < 2);
         top->trigger = vbdFlag();
         top->N = vbdValue();
-
+        if (top->data_out == 0xFF)
+        {
+            lights_state_before = 1;
+        }
+        else
+        {
+            lights_state_before = 0;
+        }
         // dump variables into VCD file and toggle clock
         for (tick = 0; tick < 2; tick++)
         {
@@ -47,8 +56,12 @@ int main(int argc, char **argv, char **env)
             top->clk = !top->clk;
             top->eval();
         }
+        if ((top->data_out != 0xFF) && (lights_state_before)) // if lights were not all on after the module was clocked but they were all on before then the lights have just gone out..
+        {
+            vbdInitWatch(); // so start stopwatch
+        }
 
-        vbdHex(1, vbdElapsed() / 1000);
+        vbdHex(1, vbdElapsed() / 1000); // Elapsed is time since stopwatch init to Rotary button press??
 
         // display on neopixel strip
         vbdBar(top->data_out & 0xFF);
