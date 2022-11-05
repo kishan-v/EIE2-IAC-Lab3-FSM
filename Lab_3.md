@@ -124,7 +124,7 @@ The follow diagram shows a full version of the F1 light design that combines all
 
 The **_delay.sv_** module is provided. This module is from  Lecture 5 slides 16 & 17. When trigger is asserted (goes from low to high), it starts counting K clock cycles.  At which time, *time_out* goes high for one clcok cycle. This works in a similar way to clktick.sv, except:
 1. Instead of the _en_ signal, we use a _trigger_ signal, which is edge.
-2. The FSM can only be triggered again after the _trigger_signal has returned to zero.
+2. The FSM can only be triggered again after the _trigger_ signal has returned to zero.
 
 You also need to modify **_f1_fsm.sv_** to include a trigger input which kicks off the whole sequence. It also has two additional output signals: 
 
